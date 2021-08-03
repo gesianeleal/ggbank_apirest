@@ -1,0 +1,15 @@
+curl -X GET --header 'Accept: application/json' 'http://localhost:8080/accounts'
+
+
+
+new account
+
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ "documentNumber": 79878979 }' 'http://localhost:8080/accounts'
+
+detail
+
+curl -X GET --header 'Accept: application/json' 'http://localhost:8080/accounts/1'
+
+
+transactions list
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"accountId": 0, "page": 10,  "qtd": 10 }' 'http://localhost:8080/transactions'
