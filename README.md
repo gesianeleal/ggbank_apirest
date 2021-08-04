@@ -12,7 +12,7 @@ Sistema de gestão de contas
 
 #### Dicas para rodar
 
-# Banco de dados em Memória H2 (branch `banco_h2`)
+- Banco de dados em Memória H2 (branch `banco_h2`)
 
 ```shell scrip
  mvn spring-boot:run
@@ -20,7 +20,7 @@ Sistema de gestão de contas
 
 ou 
 
-# Banco de dados em MySQL (branch `master`)
+- Banco de dados em MySQL (branch `master`)
 
 ```shell scrip
 docker build -t bankgg .
