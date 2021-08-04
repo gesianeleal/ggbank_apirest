@@ -5,20 +5,28 @@ Sistema de gestão de contas
 #### Recursos
 
 - [Maven](https://maven.apache.org/) 
-- [MySQL](https://www.mysql.com/)  
+- [MySQL](https://www.mysql.com/)
 - [Spring Boot](https://start.spring.io/) 
 - [JDK 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 - [PMD-SCAN](https://pmd.github.io/)
 
 #### Dicas para rodar
 
+# Banco de dados em Memória H2 (branch `banco_h2`)
+
+```shell scrip
  mvn spring-boot:run
+```
 
 ou 
 
-docker build -t bankgg .  
+# Banco de dados em MySQL (branch `master`)
+
+```shell scrip
+docker build -t bankgg .
 
 docker run -p 3306:8080 -e SPRING_PROFILES_ACTIVE='prod' -e DATABASE_URL='jdbc:mysql://localhost:3306/gg' -e DATABASE_USERNAME='root' -e DATABASE_PASSWORD='1234' bankgg 
+```
  
 #### Documentação
 
@@ -53,6 +61,7 @@ Na criação da transação é retornado o id.
 ```shell scrip
 # Lista todas transações
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"accountId": 0, "page": 1,  "qtd": 10 }' 'http://localhost:8080/transactions'
+```
 
 Na criação da transação deve retornar.
 ```json
