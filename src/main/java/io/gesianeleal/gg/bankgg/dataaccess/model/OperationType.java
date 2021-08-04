@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(catalog = "gg", schema = "", name = "operationtype")
+@Table(name = "operationtype")
 @XmlRootElement
 public class OperationType implements Serializable {
 

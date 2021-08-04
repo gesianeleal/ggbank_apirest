@@ -13,3 +13,9 @@ curl -X GET --header 'Accept: application/json' 'http://localhost:8080/accounts/
 
 transactions list
 curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"accountId": 0, "page": 10,  "qtd": 10 }' 'http://localhost:8080/transactions'
+
+
+
+docker run -p 8080:8080 -e SPRING_PROFILES_ACTIVE='prod' -e DATABASE_URL='jdbc:mysql://localhost:3306/gg' -e
+DATABASE_USERNAME='root' -e DATABASE_PASSWORD='1234' -e JWT_SECRET='123456'
+bankgg

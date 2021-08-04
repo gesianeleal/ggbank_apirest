@@ -5,23 +5,62 @@ Sistema de gestão de contas
 #### Recursos
 
 - [Maven](https://maven.apache.org/) 
-- [MySQL](https://www.mysql.com/)
+- [MySQL](https://www.mysql.com/)  
 - [Spring Boot](https://start.spring.io/) 
 - [JDK 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 - [PMD-SCAN](https://pmd.github.io/)
 
-#### Métodos Auxiliares
+#### Dicas para rodar
+
+ mvn spring-boot:run
+
+ou 
+
+docker build -t bankgg .  
+
+docker run -p 3306:8080 -e SPRING_PROFILES_ACTIVE='prod' -e DATABASE_URL='jdbc:mysql://localhost:3306/gg' -e DATABASE_USERNAME='root' -e DATABASE_PASSWORD='1234' bankgg 
+ 
+#### Documentação
 
 API REST de account com Swagger-ui: http://localhost:8080/swagger-ui.html
 
-Acesso para lista de account: http://localhost:8080/accounts
 
-Acesso account: http://localhost:8080/accounts/{id}
+#
+### Exemplos de utilização da API
 
-Salvar, Atualizar e Deletar account: http://localhost:8080/accounts
-
-#### Dicas RUN
-
-docker build -t bankgg .
+#### Endpoints de contas
+Na criação da conta é retornado o id.
  
+```shell scrip
+# cria conta
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ "documentNumber": 79878979 }' 'http://localhost:8080/accounts'
+
+# consulta conta por id
+curl -X GET --header 'Accept: application/json' 'http://localhost:8080/accounts/1'
+```
+
+Tanto na criação como na consulta deve retornar.
+```json
+{
+    "accountId": 2,
+    "documentNumber": 89789879
+}
+```
+
+#### Endpoints de transação
+Na criação da transação é retornado o id.
  
+```shell scrip
+# Lista todas transações
+curl -X GET --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"accountId": 0, "page": 1,  "qtd": 10 }' 'http://localhost:8080/transactions'
+
+Na criação da transação deve retornar.
+```json
+{
+    "transactionId": 1,
+    "accountId": 1,
+    "operationtypeId": 2,
+    "amount": -9.87,
+    "eventDatetime": "2021-08-04T12:58:35.755+00:00"
+}
+```

@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Entity
 @EqualsAndHashCode
-@Table(catalog = "gg", schema = "", name = "account")
+@Table(name = "account")
 @XmlRootElement
 public class Account implements Serializable {
 

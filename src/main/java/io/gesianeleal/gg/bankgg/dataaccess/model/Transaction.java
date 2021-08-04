@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(catalog = "gg", schema = "", name = "transaction")
+@Table(name = "transaction")
 @XmlRootElement
 public class Transaction implements Serializable {
 

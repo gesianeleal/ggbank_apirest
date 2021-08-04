@@ -7,6 +7,9 @@ FROM adoptopenjdk/openjdk11:alpine
            # For Java 11, try this
            #FROM adoptopenjdk/openjdk11:alpine-jre
 #rodando como usuário spring no SO
+#ENV ARTIFACT_NAME 
+#EXPOSE 9090
+
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 # Refer to Maven build -> finalName
