@@ -5,8 +5,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 import io.gesianeleal.gg.bankgg.dataaccess.model.Account;
-import io.gesianeleal.gg.bankgg.error.ResourceNotFoundException;
+import io.gesianeleal.gg.bankgg.dataaccess.model.Transaction;
 import io.gesianeleal.gg.bankgg.service.AccountService;
+import io.gesianeleal.gg.bankgg.service.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class AccountController {
     @Autowired
     AccountService service;
 
+    @Autowired
+    TransactionService transactionService;
+
     @ApiOperation(value = "Return list of Accounts")
     @GetMapping
     public ResponseEntity<List<Account>> listAccounts() {
@@ -48,15 +52,15 @@ public class AccountController {
         return new ResponseEntity<List<Account>>(list, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Detail a account")
-    @GetMapping("/{id}")
-    public ResponseEntity<Account> listAccount(@PathVariable(value = "id") @Min(1) int id) {
-        log.info("List a Account");
-        Account account = service.findByAccountId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Account " + String.valueOf(id) + " NOT Found!"));
+    @ApiOperation(value = "Detail a transactions account")
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<Transaction>> listTransactionsAccount(@PathVariable(value = "id") @Min(1) int id) {
+        log.info("List a Transactions Account");
+        List<Transaction> list = transactionService.findByAccountId(id);
+        log.info(String.valueOf(list.size()));
 
         //return ResponseEntity.ok().body(new DetailAccountDTO(account));
-        return ResponseEntity.ok().body(account);
+        return ResponseEntity.ok().body(list);
     }
 
     @ApiOperation(value = "Save a new account")

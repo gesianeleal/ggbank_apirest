@@ -1,20 +1,17 @@
 package io.gesianeleal.gg.bankgg.controller;
 
-import io.gesianeleal.gg.bankgg.controller.dto.PageDTO;
 import io.gesianeleal.gg.bankgg.dataaccess.model.Transaction;
+import io.gesianeleal.gg.bankgg.error.ResourceNotFoundException;
 import io.gesianeleal.gg.bankgg.service.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,17 +37,39 @@ public class TransactionController {
 
     @ApiOperation(value = "Return list of Transaction")
     @GetMapping
-    public ResponseEntity<List<Transaction>> listTransactions(@RequestBody PageDTO pageDTO) {
+    public ResponseEntity<List<Transaction>> listTransactions() {
         log.info("Return Transactions");
-        Pageable paging = PageRequest.of(pageDTO.getPage(), pageDTO.getQtd(), Sort.by("accountId").descending().and(Sort.by("eventDatetime")));
-        Page<Transaction> listPage;
-        if (pageDTO.getAccountId() > 0) {
-            listPage = service.findByAccountId(paging, pageDTO.getAccountId());
-            return ResponseEntity.ok(listPage.getContent());
-        }
-        listPage = service.findAll(paging);
-        return ResponseEntity.ok(listPage.toList());
+        List<Transaction> listPage = service.findAll();
+        return ResponseEntity.ok(listPage);
     }
+    
+    
+    @ApiOperation(value = "Detail a Transaction")
+    @GetMapping("/{id}")
+    public ResponseEntity<Transaction> listAccount(@PathVariable(value = "id") @Min(1) int id) {
+        log.info("List a Transaction");
+        Transaction transaction = service.getTransaction(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction " + String.valueOf(id) + " NOT Found!"));
+
+        //return ResponseEntity.ok().body(new DetailAccountDTO(account));
+        return ResponseEntity.ok().body(transaction);
+    }
+    
+   
+//
+//    @ApiOperation(value = "Return list of Transaction")
+//    @GetMapping
+//    public ResponseEntity<List<Transaction>> listTransactions(@RequestBody PageDTO pageDTO) {
+//        log.info("Return Transactions");
+//        Pageable paging = PageRequest.of(pageDTO.getPage(), pageDTO.getQtd(), Sort.by("accountId").descending().and(Sort.by("eventDatetime")));
+//        Page<Transaction> listPage;
+//        if (pageDTO.getAccountId() > 0) {
+//            listPage = service.findByAccountId(paging, pageDTO.getAccountId());
+//                        return ResponseEntity.ok(listPage.getContent());
+//        }
+//        listPage = service.findAll(paging);
+//        return ResponseEntity.ok(listPage.toList());
+//    }
     
     @ApiOperation(value = "Save a new transaction")
     @PostMapping
@@ -75,8 +94,8 @@ public class TransactionController {
     @CacheEvict(value = "transactionsAccount", allEntries = true)
     public ResponseEntity<String> delete(@PathVariable("id") @Min(1) int id) {
         log.info("Delete a Transaction Account");
-        Transaction transaction = service.getTransaction(id);
-        if (transaction == null) {
+        Optional<Transaction> transaction = service.getTransaction(id);
+        if (transaction.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 

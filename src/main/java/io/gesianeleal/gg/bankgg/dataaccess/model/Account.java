@@ -39,6 +39,7 @@ public class Account implements Serializable {
     @NotNull
     private long documentNumber;
 
+
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
 //    private Collection<Transaction> transactionCollection;
 //
